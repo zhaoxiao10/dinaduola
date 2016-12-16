@@ -7,13 +7,38 @@ var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var http = require('http');
 
-var index = require('./routes/index');
+//var index = require('./routes/index');
 var users = require('./routes/users');
-
+//var test = require('./routes/test');
+var movies = require('./routes/movies');
 var app = express();
 
+//db
+var mongoose = require('mongoose');
+// connect to mongodb
+var dbName = 'dinaduola';
+var url = 'mongodb://dinaduola:dinaduola@localhost:27017/' + dbName;
+var mongoOptions = {
+    server: {
+        socketOptions: {
+            keepAlive: 1
+        }
+    }
+};
+mongoose.connect(url, mongoOptions);
+mongoose.connection.on('error', function (err) {
+    console.log('Mongo Error:' + err);
+}).on('open', function () {
+    console.log('Connection opened');
+});
+
+//json
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'public'));
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
 
@@ -25,8 +50,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+//app.use('/', index);
 app.use('/users', users);
+//app.get('/test', test.list);
+app.get('/api/movie/all', movies.list);
+app.post('/api/movie/create', movies.create);
+app.put('/api/movie/:id', movies.update);
+app.get('/api/movie/all3', movies.delete);
+
+app.all('/*', function (req, res) {
+    res.sendfile('index.html', {root: path.join(__dirname, 'public')});
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
