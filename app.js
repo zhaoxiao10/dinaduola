@@ -11,6 +11,7 @@ var http = require('http');
 var users = require('./routes/users');
 //var test = require('./routes/test');
 var movies = require('./routes/movies');
+var dinaduola = require('./routes/dinaduola');
 var app = express();
 
 //db
@@ -56,7 +57,9 @@ app.use('/users', users);
 app.get('/api/movie/all', movies.list);
 app.post('/api/movie/create', movies.create);
 app.put('/api/movie/:id', movies.update);
-app.get('/api/movie/all3', movies.delete);
+app.get('/api/dinaduola/all', dinaduola.list);
+app.put('/api/dinaduola/create', dinaduola.create);
+app.delete('/api/dinaduola/delete/:id', dinaduola.delete);
 
 app.all('/*', function (req, res) {
     res.sendfile('index.html', {root: path.join(__dirname, 'public')});

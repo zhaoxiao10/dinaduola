@@ -1,0 +1,15 @@
+<a href="javascript:void(0)" class="btn btn-default" ng-click="add()">导入</a>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Content</th>
+        <th>删除</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="dinaduola in dinaduolas">
+        <td>{{dinaduola.content}}</td>
+        <td><a class="btn btn-default" href="javascript:void(0)" ng-click="deleteDinaduola(dinaduola)">删除</a></td>
+    </tr>
+    </tbody>
+</table>
